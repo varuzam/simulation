@@ -34,7 +34,7 @@ public class WorldMap {
     public List<Coord> getLocationsByType(Class entityClass) {
         List<Coord> entities = new ArrayList<>();
         for (Coord coord : cells.keySet()) {
-            if (entityClass.isInstance(coord))
+            if (entityClass.isInstance(get(coord)))
                 entities.add(coord);
         }
 
