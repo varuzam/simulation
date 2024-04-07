@@ -1,17 +1,17 @@
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Random;
 
 public class Simulation {
 
-    final int worldHeight;
-    final int worldWidth;
     private WorldMap map;
     private int tickCounter = 0;
+    private Visualizer visualizer;
 
-    Simulation(Config config) {
-        this.worldHeight = config.worldHeight;
-        this.worldWidth = config.worldWidth;
-        map = new WorldMap(worldHeight, worldWidth);
+    Simulation(Config config) throws InstantiationException, IllegalAccessException, IllegalArgumentException,
+            InvocationTargetException, NoSuchMethodException, SecurityException {
+        map = new WorldMap(config.worldHeight, config.worldWidth);
+        visualizer = (Visualizer) config.visualizerClass.getConstructor().newInstance();
     }
 
     public void start() throws Exception {
@@ -23,10 +23,10 @@ public class Simulation {
             // spawn grass each n tick
             if (tickCounter % 5 == 0) {
                 Random r = new Random();
-                map.putIfAbsent(new Coord(r.nextInt(worldWidth), r.nextInt(worldHeight)), new Grass());
+                map.putIfAbsent(new Coord(r.nextInt(map.width), r.nextInt(map.height)), new Grass());
             }
 
-            printWorld();
+            visualizer.printWorld(map);
 
             int predatorsCount = 0;
             int herbivoresCount = 0;
@@ -53,32 +53,15 @@ public class Simulation {
         // TODO: implement getting all values from config
         Random r = new Random();
         for (byte i = 0; i < 10; i++) {
-            map.putIfAbsent(new Coord(r.nextInt(worldWidth), r.nextInt(worldHeight)), new Grass());
-            map.putIfAbsent(new Coord(r.nextInt(worldWidth), r.nextInt(worldHeight)), new Rock());
+            map.putIfAbsent(new Coord(r.nextInt(map.width), r.nextInt(map.height)), new Grass());
+            map.putIfAbsent(new Coord(r.nextInt(map.width), r.nextInt(map.height)), new Rock());
         }
         for (byte i = 0; i < 2; i++) {
-            map.putIfAbsent(new Coord(r.nextInt(worldWidth), r.nextInt(worldHeight)), new Predator());
+            map.putIfAbsent(new Coord(r.nextInt(map.width), r.nextInt(map.height)), new Predator());
         }
         for (byte i = 0; i < 6; i++) {
-            map.putIfAbsent(new Coord(r.nextInt(worldWidth), r.nextInt(worldHeight)), new Herbivore());
+            map.putIfAbsent(new Coord(r.nextInt(map.width), r.nextInt(map.height)), new Herbivore());
         }
-    }
-
-    private void printWorld() {
-        for (int y = 0; y < worldHeight; y++) {
-            System.out.print('.');
-            for (int x = 0; x < worldWidth; x++) {
-                Entity entity = map.get(new Coord(x, y));
-                if (entity != null) {
-                    System.out.print(entity.sign);
-                } else {
-                    System.out.print(" ");
-                }
-                System.out.print('.');
-            }
-            System.out.println("");
-        }
-        System.out.println();
     }
 
     private void doAction(Coord creatureLocation) throws Exception {

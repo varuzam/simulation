@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.Queue;
 
 public class WorldMap {
-    private int height;
-    private int width;
+    public final int height;
+    public final int width;
     private Map<Coord, Entity> cells = new HashMap<>();
 
     WorldMap(int height, int width) {
