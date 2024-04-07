@@ -31,13 +31,11 @@ public class WorldMap {
     // return entities;
     // }
 
-    public List<Coord> getLocationsByType(Object entityClass) {
+    public List<Coord> getLocationsByType(Class entityClass) {
         List<Coord> entities = new ArrayList<>();
         for (Coord coord : cells.keySet()) {
-            if (get(coord).getClass() == entityClass
-                    || get(coord).getClass().getSuperclass() == entityClass) {
+            if (entityClass.isInstance(coord))
                 entities.add(coord);
-            }
         }
 
         return entities;
