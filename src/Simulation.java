@@ -3,11 +3,16 @@ import java.util.Random;
 
 public class Simulation {
 
+    final int worldHeight;
+    final int worldWidth;
+    private WorldMap map;
     private int tickCounter = 0;
 
-    final int worldHeight = 15;
-    final int worldWidth = 15;
-    private WorldMap map = new WorldMap(worldHeight, worldWidth);
+    Simulation(Config config) {
+        this.worldHeight = config.worldHeight;
+        this.worldWidth = config.worldWidth;
+        map = new WorldMap(worldHeight, worldWidth);
+    }
 
     public void start() throws Exception {
         accomodateWorld();
@@ -45,7 +50,7 @@ public class Simulation {
     }
 
     private void accomodateWorld() {
-        // TODO: implement 40% grass, 20% herbivores, 10% predators
+        // TODO: implement getting all values from config
         Random r = new Random();
         for (byte i = 0; i < 10; i++) {
             map.putIfAbsent(new Coord(r.nextInt(worldWidth), r.nextInt(worldHeight)), new Grass());
