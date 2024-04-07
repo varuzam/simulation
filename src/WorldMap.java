@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,31 +62,12 @@ public class WorldMap {
         put(to, entity);
     }
 
-    // find the closest entity with type of entityClass. Use BFS algo
-    public Coord findClosestEntityCoord(Coord start, Object entityClass) {
-        Map<Coord, Integer> visited = new HashMap<>(); // Map<coordinates, path length>
-        Queue<Coord> q = new LinkedList<>();
-        visited.put(start, 0);
-        q.add(start);
-        Coord p = null;
-        while (!q.isEmpty()) {
-            p = q.poll();
-            if (cells.containsKey(p) && cells.get(p).getClass() == entityClass)
-                break;
-            List<Coord> neighbours = Arrays.asList(new Coord(p.x, p.y - 1), new Coord(p.x - 1, p.y),
-                    new Coord(p.x + 1, p.y), new Coord(p.x, p.y + 1));
-            for (Coord neighbour : neighbours) {
-                if (neighbour.x >= 0 && neighbour.x < width && neighbour.y >= 0 && neighbour.y < height
-                        && !visited.containsKey(neighbour)) {
-                    visited.put(neighbour, visited.get(p) + 1);
-                    q.add(neighbour);
-                }
-            }
-        }
-        return p;
+    public boolean checkBoundaries(Coord coord) {
+        return coord.x >= 0 && coord.x < width && coord.y >= 0 && coord.y < height;
     }
 
-    public List<Coord> findPathToClosestEntity(Coord start, Object entityClass) {
+    // find the path to the closest entity with type of entityClass. Use BFS algo
+    public List<Coord> findPathToClosestEntity(Coord start, Class entityClass) {
         class Cell {
             Coord previos_cell_coord;
             int cost;
@@ -104,17 +84,11 @@ public class WorldMap {
         Coord finish = null;
         while (!q.isEmpty()) {
             finish = q.poll();
-            if (cells.containsKey(finish) && cells.get(finish).getClass() == entityClass)
+            if (entityClass.isInstance(get(finish)))
                 break;
-            List<Coord> neighbours = Arrays.asList(
-                    new Coord(finish.x, finish.y - 1),
-                    new Coord(finish.x - 1, finish.y),
-                    new Coord(finish.x + 1, finish.y),
-                    new Coord(finish.x, finish.y + 1));
-            for (Coord neighbour : neighbours) {
-                if (neighbour.x >= 0 && neighbour.x < width && neighbour.y >= 0 && neighbour.y < height
-                        && !visited.containsKey(neighbour)
-                        && (get(neighbour) == null || get(neighbour).getClass() == entityClass)) {
+            for (Coord neighbour : finish.getNeighbours()) {
+                if (checkBoundaries(neighbour) && !visited.containsKey(neighbour)
+                        && (get(neighbour) == null || entityClass.isInstance(get(neighbour)))) {
                     visited.put(neighbour, new Cell(finish, visited.get(finish).cost + 1));
                     q.add(neighbour);
                 }

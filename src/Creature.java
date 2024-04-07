@@ -1,7 +1,7 @@
 abstract class Creature extends Entity {
     public int speed;
     public int healthPoints = 100;
-    public Object food;
+    public Class food;
     protected short starvationCounter;
     private static final Exception WrongFoodException = null;
 
