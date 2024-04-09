@@ -1,5 +1,7 @@
+package entities;
+
 public class Rock extends Entity {
-    Rock() {
+    public Rock() {
         sign = "r";
     }
 }

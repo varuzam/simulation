@@ -1,5 +1,7 @@
+package entities;
+
 public class Grass extends Entity {
-    Grass() {
+    public Grass() {
         sign = "g";
     }
 }

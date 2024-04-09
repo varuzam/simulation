@@ -1,6 +1,8 @@
+package entities;
+
 public class Herbivore extends Creature {
 
-    Herbivore() {
+    public Herbivore() {
         sign = "H";
         speed = 1;
         food = Grass.class;

@@ -1,3 +1,4 @@
+import entities.Entity;
 
 public class VisualizerConsole extends Visualizer {
 

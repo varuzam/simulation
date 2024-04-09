@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import entities.Entity;
+
 public class WorldMap {
     public final int height;
     public final int width;

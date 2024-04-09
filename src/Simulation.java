@@ -2,6 +2,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Random;
 
+import entities.*;
+
 public class Simulation {
 
     private WorldMap map;
