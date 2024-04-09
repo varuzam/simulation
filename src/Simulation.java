@@ -1,4 +1,3 @@
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Random;
 
@@ -10,8 +9,7 @@ public class Simulation {
     private int tickCounter = 0;
     private Visualizer visualizer;
 
-    Simulation(Config config) throws InstantiationException, IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+    Simulation(Config config) throws Exception {
         map = new WorldMap(config.worldHeight, config.worldWidth);
         visualizer = (Visualizer) config.visualizerClass.getConstructor().newInstance();
     }
@@ -32,6 +30,8 @@ public class Simulation {
 
             int predatorsCount = 0;
             int herbivoresCount = 0;
+            // TODO кажется, что карта должна иметь множество индексов, а не одну
+            // мапу, которая на каждый тик итерируется
             List<Coord> creatureLocations = map.getLocationsByType(Creature.class);
             // do actions
             for (Coord loc : creatureLocations) {
@@ -76,14 +76,13 @@ public class Simulation {
             map.remove(foodLocationPath.get(0));
         } else {
             creature.move();
-            if (creature.healthPoints >= 0)
-                if (creature.speed > foodLocationPath.size() - 1)
-                    // move to the lastest cell before the food cell
-                    map.move(creatureLocation, foodLocationPath.get(foodLocationPath.size() - 1));
-                else
-                    map.move(creatureLocation, foodLocationPath.get(creature.speed - 1));
-            else
+            if (creature.healthPoints >= 0) {
+                int stepsCount = Math.min(creature.speed, foodLocationPath.size() - 1);
+                // eventually it will has moved to the lastest cell before the food cell
+                map.move(creatureLocation, foodLocationPath.get(stepsCount - 1));
+            } else {
                 map.remove(creatureLocation);
+            }
         }
     }
 

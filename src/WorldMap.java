@@ -21,18 +21,6 @@ public class WorldMap {
         return cells.get(coord);
     }
 
-    // public Map<coord, Entity> getByType(Object entityClass) {
-    // Map<coord, Entity> entities = new HashMap<>();
-    // for (coord coord : cells.keySet()) {
-    // if (cells.get(coord).getClass() == entityClass
-    // || cells.get(coord).getClass().getSuperclass() == entityClass) {
-    // entities.put(coord, cells.get(coord));
-    // }
-    // }
-
-    // return entities;
-    // }
-
     public List<Coord> getLocationsByType(Class entityClass) {
         List<Coord> entities = new ArrayList<>();
         for (Coord coord : cells.keySet()) {
