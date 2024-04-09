@@ -1,5 +1,5 @@
-abstract class Visualizer {
+interface Visualizer {
 
-    abstract void printWorld(WorldMap map);
+    public void printWorld(WorldMap map);
 
 }

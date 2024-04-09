@@ -1,6 +1,6 @@
 import entities.Entity;
 
-public class VisualizerConsole extends Visualizer {
+public class VisualizerConsole implements Visualizer {
 
     public void printWorld(WorldMap map) {
         for (int y = 0; y < map.height; y++) {
