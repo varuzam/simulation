@@ -1,5 +1,5 @@
 interface Visualizer {
 
-    public void printWorld(WorldMap map);
+    void printWorld(WorldMap map);
 
 }

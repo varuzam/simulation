@@ -38,9 +38,9 @@ public class Simulation {
                 // during doing actions some creature may be eaten
                 if (map.get(loc) == null)
                     continue;
-                if (map.get(loc).getClass() == Predator.class)
+                if (Predator.class.isInstance(map.get(loc)))
                     predatorsCount++;
-                if (map.get(loc).getClass() == Herbivore.class)
+                if (Herbivore.class.isInstance(map.get(loc)))
                     herbivoresCount++;
                 doAction(loc);
             }
